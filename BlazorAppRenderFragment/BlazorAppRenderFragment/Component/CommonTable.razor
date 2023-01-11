@@ -1,0 +1,32 @@
+﻿@using BlazorAppRenderFragment.Component
+@typeparam TItem  
+
+<table class="table table-hover table-striped">
+    <thead class="thead-light rounded">
+        <tr>@this.TableHeader</tr>
+    </thead>
+    <tbody>
+        @if (this.Items != null)
+        {
+            @foreach (var item in this.Items)
+            {
+                <tr @onclick="@(() => this.RowOnClick.InvokeAsync(item))">@this.RowTemplate(item)</tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public EventCallback<TItem> RowOnClick { get; set; }
+
+    [Parameter]
+    public RenderFragment TableHeader { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> RowTemplate { get; set; }
+
+    [Parameter]
+    public IList<TItem> Items { get; set; }
+}

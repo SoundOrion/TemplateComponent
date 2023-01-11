@@ -1,0 +1,71 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using BlazorAppRenderFragment.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+<p>ASP.NET Core Blazor テンプレート コンポーネント</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    <CommonTable Items="forecasts" RowOnClick="this.RowOnClick" TItem="WeatherForecast">
+        <TableHeader>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@context.Date.ToShortDateString()</td>
+            <td>@context.TemperatureC</td>
+            <td>@context.TemperatureF</td>
+            <td>@context.Summary</td>
+        </RowTemplate>
+    </CommonTable>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+
+    protected void RowOnClick(WeatherForecast value)
+    {
+        //Rowをクリックした時の処理を部品コンポーネントを呼ぶ側で決める。
+    }
+}
