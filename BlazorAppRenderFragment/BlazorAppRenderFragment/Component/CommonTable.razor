@@ -1,7 +1,7 @@
 ﻿@using BlazorAppRenderFragment.Component
 @typeparam TItem  
 
-<table class="table table-hover table-striped">
+<table class=@className>
     <thead class="thead-light rounded">
         <tr>@this.TableHeader</tr>
     </thead>
@@ -29,4 +29,7 @@
 
     [Parameter]
     public IList<TItem> Items { get; set; }
+
+    [Parameter]
+    public string className { get; set; }
 }
